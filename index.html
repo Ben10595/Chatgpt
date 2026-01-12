@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reflex Raid – Reaktionsspiel</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="theme-dark">
+    <div class="app">
+      <header class="top-bar">
+        <div>
+          <p class="eyebrow">Reflex Raid</p>
+          <h1>Reaktionsspiel</h1>
+        </div>
+        <div class="top-actions">
+          <button class="ghost" id="toggleTheme" type="button">Dark Mode</button>
+          <button class="ghost" id="toggleSound" type="button">Sound: An</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel intro" id="startScreen">
+          <h2>Bereit für schnelle Klicks?</h2>
+          <p>
+            Ziele erscheinen zufällig in der Spielfläche. Klicke sie so schnell wie möglich an,
+            um Punkte zu sammeln und Combos aufzubauen. Verfehlen kostet dich Zeit und Combo.
+          </p>
+          <div class="button-row">
+            <button class="primary" id="startButton" type="button">Start</button>
+            <button class="secondary" id="openSettings" type="button">Einstellungen</button>
+            <button class="secondary" id="openHighscores" type="button">Highscores</button>
+          </div>
+          <div class="control-hints">
+            <span><strong>Space</strong> Start/Pause</span>
+            <span><strong>R</strong> Neustart</span>
+            <span><strong>Esc</strong> Pause-Menü</span>
+          </div>
+        </section>
+
+        <section class="panel game" id="gameScreen" hidden>
+          <div class="hud">
+            <div>
+              <span>Score</span>
+              <strong id="scoreText">0</strong>
+            </div>
+            <div>
+              <span>Combo</span>
+              <strong id="comboText">x1</strong>
+            </div>
+            <div>
+              <span>Zeit</span>
+              <strong id="timeText">60.0s</strong>
+            </div>
+            <div>
+              <span>Ø Reaktion</span>
+              <strong id="avgReactionText">–</strong>
+            </div>
+          </div>
+
+          <div class="arena" id="arena" aria-live="polite" aria-label="Spielfläche">
+            <div class="countdown" id="countdown" aria-hidden="true"></div>
+            <div class="pause-overlay" id="pauseOverlay" hidden>
+              <div class="pause-card" role="dialog" aria-modal="true">
+                <h3>Pausiert</h3>
+                <p>Drücke Space zum Fortsetzen oder passe die Einstellungen an.</p>
+                <div class="button-row">
+                  <button class="primary" id="resumeButton" type="button">Fortsetzen</button>
+                  <button class="secondary" id="restartButton" type="button">Neustart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div>
+              <span>Treffer</span>
+              <strong id="hitsText">0</strong>
+            </div>
+            <div>
+              <span>Fehlschüsse</span>
+              <strong id="missText">0</strong>
+            </div>
+            <div>
+              <span>Beste Reaktion</span>
+              <strong id="bestReactionText">–</strong>
+            </div>
+            <div>
+              <span>Combo Max</span>
+              <strong id="maxComboText">x1</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel settings" id="settingsPanel" hidden>
+          <h2>Einstellungen</h2>
+          <div class="settings-grid">
+            <label>
+              Runde
+              <select id="roundSelect">
+                <option value="30">30 Sekunden</option>
+                <option value="60" selected>60 Sekunden</option>
+                <option value="90">90 Sekunden</option>
+              </select>
+            </label>
+            <label>
+              Schwierigkeit
+              <select id="difficultySelect">
+                <option value="easy">Easy</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Hard</option>
+              </select>
+            </label>
+            <label>
+              Zielgröße
+              <select id="sizeSelect">
+                <option value="small">Klein</option>
+                <option value="medium" selected>Normal</option>
+                <option value="large">Groß</option>
+              </select>
+            </label>
+            <label>
+              Sound
+              <select id="soundSelect">
+                <option value="on" selected>An</option>
+                <option value="off">Aus</option>
+              </select>
+            </label>
+            <label>
+              Dark Mode
+              <select id="themeSelect">
+                <option value="dark" selected>An</option>
+                <option value="light">Aus</option>
+              </select>
+            </label>
+            <label>
+              Debug
+              <select id="debugSelect">
+                <option value="off" selected>Aus</option>
+                <option value="on">An</option>
+              </select>
+            </label>
+            <label>
+              Zen Mode
+              <select id="zenSelect">
+                <option value="off" selected>Aus</option>
+                <option value="on">An</option>
+              </select>
+            </label>
+          </div>
+          <div class="button-row">
+            <button class="primary" id="saveSettings" type="button">Speichern</button>
+            <button class="secondary" id="closeSettings" type="button">Schließen</button>
+          </div>
+        </section>
+
+        <section class="panel highscores" id="highscorePanel" hidden>
+          <h2>Highscores</h2>
+          <ol id="highscoreList"></ol>
+          <button class="secondary" id="closeHighscores" type="button">Schließen</button>
+        </section>
+
+        <section class="panel results" id="resultScreen" hidden>
+          <h2>Runde beendet</h2>
+          <div class="results-grid">
+            <div>
+              <span>Score</span>
+              <strong id="resultScore">0</strong>
+            </div>
+            <div>
+              <span>Treffer</span>
+              <strong id="resultHits">0</strong>
+            </div>
+            <div>
+              <span>Fehlschüsse</span>
+              <strong id="resultMiss">0</strong>
+            </div>
+            <div>
+              <span>Ø Reaktion</span>
+              <strong id="resultAvg">–</strong>
+            </div>
+            <div>
+              <span>Beste Reaktion</span>
+              <strong id="resultBest">–</strong>
+            </div>
+            <div>
+              <span>Combo Max</span>
+              <strong id="resultCombo">x1</strong>
+            </div>
+          </div>
+          <div class="button-row">
+            <button class="primary" id="playAgain" type="button">Nochmal spielen</button>
+            <button class="secondary" id="backToMenu" type="button">Zurück zum Menü</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
