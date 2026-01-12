@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zahlenjagd – Mini-Spiel</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game">
+      <header class="game__header">
+        <p class="game__eyebrow">Mini-Spiel</p>
+        <h1>Zahlenjagd</h1>
+        <p class="game__subtitle">Finde die geheime Zahl zwischen 1 und 20.</p>
+      </header>
+
+      <section class="game__panel">
+        <div class="game__status">
+          <p id="statusText">Ich denke an eine Zahl …</p>
+          <p class="game__hint" id="hintText">Tipp: Starte mit der Mitte!</p>
+        </div>
+
+        <div class="game__controls">
+          <label for="guessInput">Dein Tipp</label>
+          <div class="game__input-row">
+            <input id="guessInput" type="number" min="1" max="20" placeholder="z. B. 12" />
+            <button id="guessButton" type="button">Prüfen</button>
+          </div>
+          <div class="game__actions">
+            <button id="resetButton" type="button" class="secondary">Neues Spiel</button>
+          </div>
+        </div>
+
+        <div class="game__score">
+          <div>
+            <span>Versuche</span>
+            <strong id="attemptsText">0</strong>
+          </div>
+          <div>
+            <span>Beste Runde</span>
+            <strong id="bestText">–</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="game__history">
+        <h2>Verlauf</h2>
+        <ul id="historyList" aria-live="polite"></ul>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
